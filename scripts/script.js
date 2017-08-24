@@ -8,6 +8,8 @@
 const xmlConverter = new X2JS();
 const listOfArticles = [];
 
+commonWords = commonWordString.split('\n');
+
 	$.ajax({
 	url: 'http://export.arxiv.org/api/query?search_query=nitrogen+AND+vacancy',
 	dataType: 'xml',
@@ -22,7 +24,16 @@ const listOfArticles = [];
             listOfArticles.push( new Article(article) );
         });
 
-        console.log(listOfArticles);
+		console.log(listOfArticles);
+
+		const bins = ArticleAnalyzer.sortToBins(listOfArticles, 4);
+
+		for (let i = 0; i < bins.length; i++) {
+			const $bin = App.createDomArticleBin(bins[i]);
+			$('body').append($bin);
+		}
+		
+		// console.log( ArticleAnalyzer.sortToBins(listOfArticles, 6) );
 		
 		// console.log(xmlConverter.xml2json(res).feed.entry);
 	});

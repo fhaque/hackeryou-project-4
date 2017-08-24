@@ -28,7 +28,7 @@ class Article {
 
         words = Article.removeCommonWordsFromWordsObj(words);
 
-        words = Article.removeWordsWithWordCountLessThan(2, words);
+        // words = Article.removeWordsWithWordCountLessThan(2, words);
 
         return words;
     }

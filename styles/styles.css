@@ -1,0 +1,15 @@
+p {
+    font-size: 9px;
+}
+
+h1 {
+    font-size: 9px;
+}
+
+.articleBin {
+    border: 2px solid red;
+}
+
+.article {
+    border: 1px solid blue;
+}
