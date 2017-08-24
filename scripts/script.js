@@ -23,7 +23,7 @@ const listOfArticles = [];
         });
 
         console.log(listOfArticles);
-        
+		
 		// console.log(xmlConverter.xml2json(res).feed.entry);
 	});
 

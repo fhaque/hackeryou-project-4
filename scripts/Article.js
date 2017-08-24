@@ -68,7 +68,7 @@ class Article {
     static totalWordCountOfWordsObj(wordsObj) {
         let sum = 0;
         for ( let word in wordsObj ) {
-            sum += a[word];
+            sum += wordsObj[word];
         }
     
         return sum;
