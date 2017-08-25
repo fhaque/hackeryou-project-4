@@ -42,7 +42,80 @@ class ArticleAnalyzer {
         return bins;
     }
 
+    //TODO: Don't know why adding 3rd for loop below (uncomment)
+    //breaks entire app.
+    static sortToBinsKNN(articleArray, iterationLimit) {
+        
+        //assignment step
+        let minError = Infinity;
+        let bestBins = [];
+        for (let k = 1; k <= 10; k++ ) {
+            let currError = 0;
 
+            let bins = [];
+            for (let i = 0; i < k; i++) {
+                bins.push([]);
+            }
+
+            //articles in random bins
+            for(let i = 0; i < articleArray.length; i++) {
+                bins[Math.floor(Math.random() * k)].push(articleArray[i]);
+            }
+
+            // console.log(bins);
+
+            for (let i = 0; i < iterationLimit; i++) {
+                currError = 0;
+                let newBins = [];
+                for (let j = 0; j < k; j++) {
+                    newBins.push([]);
+                }
+
+                
+                for(let j=0; j < articleArray.length; j++) {
+                    let minDistance = Infinity;
+                    let minIndex = 0;
+                    // for (let h = 0; h < k; i++) {
+                        // console.log(articleArray[j]);
+                        // let currDistance = ArticleAnalyzer.clusterDistance(articleArray[j], bins[h]);
+
+    //                     if (currDistance < minDistance) {
+    //                         minIndex = h;
+    //                         minDistance = currDistance;
+
+    //                     }
+                    // }
+                    
+    //                 newBins[minIndex].push(articleArray[j]);
+    //                 currError += minDistance;
+                }
+
+    //             bins = newBins;
+
+    //             console.log(bins);
+                
+            }
+
+            
+    //         if (currError < minError) {
+    //             bestBins = bins;
+    //             minError = currError;
+    //         }
+            
+        }
+    //     console.log(bestBins);
+    //     return bestBins;
+
+    }
+
+    static clusterDistance(article, articleArray) {
+        let sum = 0;
+        for (let i=0; i < articleArray.length; i++) {
+            sum += ArticleAnalyzer.distance(article, articleArray[i]);
+        }
+
+        return sum;
+    }
 
 
     /*************** Distance-related functions ******************/
@@ -58,7 +131,9 @@ class ArticleAnalyzer {
             titleDistance = 0;
         }
 
-        return summaryDistance - 0.1 * titleDistance;
+        let categoryScore = ArticleAnalyzer.scoreBetweenCategories(a.categories, b.categories);
+
+        return summaryDistance + 0.2 * titleDistance - 80 * categoryScore;
 
     }
 
@@ -85,31 +160,66 @@ class ArticleAnalyzer {
 
         let tempKey;
         let sumDistance = 0;
+        //TODO: similar string check
+        // for (let i = 0; i < aKeys.length; i++) {
+        //     tempKey = aKeys[i];
+        //     let minDistance = Infinity;
+        //     let minDistanceWordCount = 0;
+        //     let currDistance;
+
+        //     //find minimum word similarity distance
+        //     for (let j = 0; j < bKeys.length; j++) {
+        //         currDistance = Levenshtein.get(tempKey, bKeys[j]);
+        //         if (currDistance < minDistance) {
+        //             minDistance = currDistance;
+        //             minDistanceWordCount = a[tempKey] + b[bKeys[j]];
+        //         }
+        //     }
+
+        //     sumDistance += minDistance * (minDistanceWordCount / sumWordCount);
+        // }
+
+        // let score = 100 * (sumDistance / aKeys.length);
+        
+        // if (score === NaN) {
+        //     score = Infinity;
+        // }
+
         for (let i = 0; i < aKeys.length; i++) {
-            tempKey = aKeys[i];
-            let minDistance = Infinity;
-            let minDistanceWordCount = 0;
-            let currDistance;
-
-            //find minimum word similarity distance
-            for (let j = 0; j < bKeys.length; j++) {
-                currDistance = Levenshtein.get(tempKey, bKeys[j]);
-                if (currDistance < minDistance) {
-                    minDistance = currDistance;
-                    minDistanceWordCount = a[tempKey] + b[bKeys[j]];
-                }
+            if ( !(aKeys[i] in b) ) {
+                sumDistance += 1;
             }
-
-            sumDistance += minDistance * (minDistanceWordCount / sumWordCount);
         }
 
         let score = 100 * (sumDistance / aKeys.length);
-
+        
         if (score === NaN) {
             score = Infinity;
         }
 
         return score;
+    }
+
+    static scoreBetweenCategories(a, b) {
+        let temp;
+
+        //make sure a is the smallest
+        if (a.length > b.length) {
+            temp = b;
+            b = a;
+            a = temp;
+        }
+
+        let score = 0;
+
+        for (let i=0; i < a.length; i++) {
+            if ( b.includes(a[i]) ) {
+                score += 1;
+            }
+        }
+
+        return score;
+
     }
 
 

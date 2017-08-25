@@ -23,7 +23,9 @@ class App {
 
         const $titleObj = $('<p>').addClass('article__titleObj').text(JSON.stringify(article.titleObj));
 
-        return $article.append($title, $summary, $summaryObj, $titleObj);
+        const $categories = $('<p>').addClass('article__categories').text(article.categories);
+
+        return $article.append($title, $summary, $summaryObj, $titleObj, $categories);
     }
 
 

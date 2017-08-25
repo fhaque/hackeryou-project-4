@@ -9,9 +9,9 @@ const xmlConverter = new X2JS();
 const listOfArticles = [];
 
 commonWords = commonWordString.split('\n');
-
+	//search_query=nitrogen+AND+vacancy
 	$.ajax({
-	url: 'http://export.arxiv.org/api/query?search_query=nitrogen+AND+vacancy',
+	url: 'http://export.arxiv.org/api/query?search_query=graphene',
 	dataType: 'xml',
 	method:'GET',
 	// data: {
@@ -26,7 +26,9 @@ commonWords = commonWordString.split('\n');
 
 		console.log(listOfArticles);
 
-		const bins = ArticleAnalyzer.sortToBins(listOfArticles, 4);
+		// ArticleAnalyzer.sortToBins(listOfArticles, 1);
+
+		const bins = ArticleAnalyzer.sortToBins(listOfArticles, 20);
 
 		for (let i = 0; i < bins.length; i++) {
 			const $bin = App.createDomArticleBin(bins[i]);
@@ -36,6 +38,9 @@ commonWords = commonWordString.split('\n');
 		// console.log( ArticleAnalyzer.sortToBins(listOfArticles, 6) );
 		
 		// console.log(xmlConverter.xml2json(res).feed.entry);
+	})
+	.fail( function (err) {
+		console.log(err);
 	});
 
 // console.log(new Article(article1));

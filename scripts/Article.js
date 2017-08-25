@@ -11,6 +11,22 @@ class Article {
         
         this.summaryObj = Article.constructWordObjOf(articleEntry.summary);
         this.titleObj = Article.constructWordObjOf(articleEntry.title);
+
+        this.categories = Article.articleEntryCategoryToCategoryArray(articleEntry.category);
+    }
+
+    static articleEntryCategoryToCategoryArray(category) {
+        const categoryArray = [];
+
+        if (category.constructor === Array) {
+            for(let item of category) {
+                categoryArray.push(item._term);
+            }
+        } else {
+            categoryArray.push(category._term);
+        }
+
+        return categoryArray;
     }
 
     static constructWordObjOf(string) {
